@@ -1,0 +1,32 @@
+
+        this.direction = 0;
+
+        this.rolls = 2;
+        
+
+if(this.body==null) return;         // ensure the body is not null
+        
+        if(this.state !== STATES.ROLLING)  return;          // ensure the dice is in not stable state
+
+        let x,y;
+        switch (this.direction){
+            case STATES.DIRECTION.UP:
+                y = this.body.y - this.maxSpeed.y;  
+                x = this.body.x;     
+                break;
+            case STATES.DIRECTION.DOWN:
+                x= this.body.x;
+                y = this.body.y + this.maxSpeed.y;
+                break;
+            case STATES.DIRECTION.RIGHT:
+                y= this.body.y;
+                x = this.body.x + this.maxSpeed.x;
+                break;
+            case STATES.DIRECTION.LEFT:
+                y=this.body.y;
+                x = this.body.x - this.maxSpeed.x;
+                break;
+        }
+        
+        this.positionDice(x,y);         // change the dice position
+        

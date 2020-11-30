@@ -8,8 +8,9 @@ module.exports = {
         height:46,
         width:46,
         position:{
-            x:100,
-            y:100
-        }
-    }
+            x:220,
+            y:220
+        },
+    },
+    frameSize : 3,
 }

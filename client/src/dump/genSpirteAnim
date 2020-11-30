@@ -1,0 +1,30 @@
+        switch(direction){
+            case STATES.DIRECTION.UP:
+                for ( let i = 1 ; i <= (config.frameSize + 1) * this.rolls ; i ++){
+                    let frame = this.getSprite(this.spritePosition.x ,this.spritePosition.y - i);
+                    frames.push(frame);
+                }
+                this.spritePosition.y = ((this.spritePosition.y - (config.frameSize + 1) ) * this.rolls ) % 8 ;
+                break;
+            case STATES.DIRECTION.DOWN:
+                for ( let i = 1 ; i <= (config.frameSize + 1) * this.rolls; i ++){
+                    let frame = this.getSprite(this.spritePosition.x,this.spritePosition.y + i);
+                    frames.push(frame);
+                }
+                this.spritePosition.y = ((this.spritePosition.y + (config.frameSize + 1) ) * this.rolls ) % 8 ;
+                break;
+            case STATES.DIRECTION.LEFT:
+                for ( let i = 1 ; i <= (config.frameSize + 1) * this.rolls; i ++){
+                    let frame = this.getSprite(this.spritePosition.x - i  ,this.spritePosition.y);
+                    frames.push(frame);
+                }
+                this.spritePosition.x = ((this.spritePosition.x - (config.frameSize + 1))  * this.rolls )% 15;
+                break;
+            case STATES.DIRECTION.RIGHT:
+                for ( let i = 1 ; i <= (config.frameSize + 1) * this.rolls; i ++){
+                    let frame = this.getSprite(this.spritePosition.x ,this.spritePosition.y + i);
+                    frames.push(frame);
+                }
+                this.spritePosition.x = ((this.spritePosition.x + (config.frameSize + 1))  * this.rolls )% 15;
+                break;
+        }

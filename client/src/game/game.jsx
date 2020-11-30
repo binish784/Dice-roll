@@ -39,7 +39,6 @@ class Game extends Component {
 
         this.dice = new Dice(this.app,this.container);
 
-
         this.app.ticker.add(this.updateGame);
         
     }
@@ -52,7 +51,7 @@ class Game extends Component {
     updateGame=()=>{
         if(this.dice==null) return;
 
-        // this.dice.update();
+        this.dice.update();
     }
 
     render(){
