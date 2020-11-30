@@ -44,18 +44,21 @@ class Dice {
     onTextureLoaded = () =>{
         this.createSpriteSheet();
         this.createDice();
-        // this.app.ticker.add(this.update);
     }
 
     createSpriteSheet = (e) =>{
-        console.log("Resource");
-        console.log(this.app.loader.resources["dice"])
+
         this.baseTexture = new PIXI.BaseTexture.from(this.app.loader.resources["dice"].url);
        
         this.baseTexture.setSize(736,414) // Original image size
 
-        this.spriteJson["4"]= [
-            new PIXI.Texture(this.baseTexture,new PIXI.Rectangle(0,0,this.size.width,this.size.height))
+        this.spriteJson["stable"]=[
+            new PIXI.Texture(this.baseTexture,new PIXI.Rectangle(0 * this.size.width, 4 * this.size.height,this.size.width,this.size.height)),
+            new PIXI.Texture(this.baseTexture,new PIXI.Rectangle(4 * this.size.width, 4 * this.size.height,this.size.width,this.size.height)),
+            new PIXI.Texture(this.baseTexture,new PIXI.Rectangle(0 , 8 * this.size.height , this.size.width,this.size.height)),
+            new PIXI.Texture(this.baseTexture,new PIXI.Rectangle(0,0,this.size.width,this.size.height)),
+            new PIXI.Texture(this.baseTexture,new PIXI.Rectangle(12*this.size.width,4*this.size.height,this.size.width,this.size.height)),
+            new PIXI.Texture(this.baseTexture,new PIXI.Rectangle(8*this.size.width,4 * this.size.height,this.size.width,this.size.height))
         ]
 
         this.spriteJson["roll"]=[];
@@ -67,11 +70,31 @@ class Dice {
     }
 
     createDice = () => {
+        this.stableSprite(2,this.position.x,this.position.y);
+        this.body.interactive=true;
+        this.body.on("click",(e)=>{this.handleClick(e)});
+    }
 
-        this.body = new PIXI.AnimatedSprite(this.spriteJson["roll"]);
+    handleClick = (e) => {
+        console.log("Roll dice");
+    }
+
+
+    stableSprite = (number,x,y) =>{
+        this.body = new PIXI.Sprite(this.spriteJson["stable"][number-1]);
+        this.body.height = this.size.height;
+        this.body.width = this.size.width;
+        this.positionDice(x,y);
+
+        this.container.addChild(this.body);
+        
+    }
+
+    animatedSprite = () =>{
+        this.body = new PIXI.AnimatedSprite(this.spriteJson["stable"][2]);
         this.body.anchor.set(0.5);
         this.body.animationSpeed = .2;
-        this.body.loop=true;
+        this.body.loop=false;
         this.body.height = this.size.height;
         this.body.width = this.size.width;
         
@@ -81,9 +104,9 @@ class Dice {
         this.body.play();   
     }
 
-    // update = () =>{
-    //     console.log("a");
-    // }
+    update = () =>{
+        // console.log("a");
+    }
 
 }
 
