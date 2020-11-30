@@ -1,17 +1,21 @@
+
 import * as PIXI from 'pixi.js';
 
 import diceSpriteSheet from  "../../assets/dice.png";
-import { dice } from '../../config/config.js';
-
+// import { dice } from '../../config/config.js';
+ 
 import {getRandom} from "../../utils/randomNumber.js";
 
 const config = require("../../config/config.js");
 const STATES = require("../../config/diceStates.js");
 const DICE = require("../../config/stableStates.js");
 
-class Dice {
 
-    constructor(app,container){
+class Dice{
+
+    constructor(app,container,onDiceRolled){
+
+        this.onDiceRolled = onDiceRolled;
 
         this.size ={
             height :config.dice.height,
@@ -120,8 +124,11 @@ class Dice {
     }
 
     finishedRolling = () =>{
-        console.log("Finished Rolling");
-        this.state = STATES.STABLE;
+
+        if(this.state===STATES.ROLLING){
+            this.state = STATES.STABLE;
+            this.onDiceRolled(this.diceValue);
+        }
     }
 
     generateSpriteAnimation = () =>{
@@ -135,7 +142,7 @@ class Dice {
         }   
         let stable = getRandom(0,5);
         frames.push(this.spriteJson["stable"][stable.toString()]);
-        this.diceValue = stable;
+        this.diceValue = stable+1;
         return frames;
     }
 

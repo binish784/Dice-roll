@@ -4,9 +4,13 @@ import * as PIXI from 'pixi.js';
 
 import Dice from '../components/dice/dice.jsx';
 
+import io from 'socket.io-client';
+      
 const config = require("../config/config.js");
+const socketConfig = require("../config/socket.js");
 
-
+const socket = io(socketConfig.endPoint);
+  
 class Game extends Component { 
     
     constructor(props){
@@ -24,6 +28,8 @@ class Game extends Component {
         this.initialize();
     }
 
+
+
     initialize(){
         this.app = new PIXI.Application(
             {
@@ -37,14 +43,20 @@ class Game extends Component {
 
         this.app.stage.addChild(this.container);
 
-        this.dice = new Dice(this.app,this.container);
+        this.dice = new Dice(this.app,this.container,this.onDiceRolled.bind(this));
 
         this.app.ticker.add(this.updateGame);
         
     }
     
     componentDidMount(){
+
+        console.log(socket);
         this.pxRender.current.appendChild(this.app.view);
+    }
+
+    onDiceRolled = (diceValue) =>{
+        console.log("DICE ROLLED GAME : " + diceValue);
     }
 
     // Main game Loop
@@ -55,7 +67,9 @@ class Game extends Component {
     }
 
     render(){
-        return <div ref={this.pxRender} id="pxRender"/>
+        return <>
+            <div ref={this.pxRender} id="pxRender"/>
+        </>
     }
 
 }
