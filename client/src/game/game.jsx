@@ -3,14 +3,12 @@ import React,{Component} from 'react';
 import * as PIXI from 'pixi.js';
 
 import Dice from '../components/dice/dice.jsx';
-
 import io from 'socket.io-client';
       
 const config = require("../config/config.js");
+
 const socketConfig = require("../config/socket.js");
 
-const socket = io(socketConfig.endPoint);
-  
 class Game extends Component { 
     
     constructor(props){
@@ -25,10 +23,16 @@ class Game extends Component {
 
         this.controller = null;
 
+        this.socket = null;
+
+        this.state = {
+            showText :  " Click on the dice to Roll ",
+        }
+
+        this.textComponent = null;
+
         this.initialize();
     }
-
-
 
     initialize(){
         this.app = new PIXI.Application(
@@ -41,9 +45,15 @@ class Game extends Component {
         
         this.container = new PIXI.Container();
 
+        this.textComponent = new PIXI.Text(this.state.showText,{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center'});
+
+        this.app.stage.addChild(this.textComponent);
+
         this.app.stage.addChild(this.container);
 
         this.dice = new Dice(this.app,this.container,this.onDiceRolled.bind(this));
+
+        this.socket = io(socketConfig.endPoint);
 
         this.app.ticker.add(this.updateGame);
         
@@ -51,12 +61,20 @@ class Game extends Component {
     
     componentDidMount(){
 
-        console.log(socket);
         this.pxRender.current.appendChild(this.app.view);
     }
 
-    onDiceRolled = (diceValue) =>{
-        console.log("DICE ROLLED GAME : " + diceValue);
+    onDiceRolled = async (diceValue) =>{
+        console.log("GAME STARTED : " + diceValue);
+
+        this.socket.on("outcomeSend",(data)=>{
+
+            this.textComponent.text= data.outcome;
+
+        })
+  
+        this.socket.emit("diceRolled",{value:diceValue})
+        
     }
 
     // Main game Loop

@@ -25,8 +25,8 @@ class Dice{
         this.state = STATES.STABLE;
 
         this.speedConst = {
-            x:3,
-            y:3,
+            max:8,
+            min:5
         }
 
         this.maxSpeed = {
@@ -107,9 +107,9 @@ class Dice{
 
         this.state = STATES.ROLLING;    // change the state to rolling
 
-        // this.direction = getRandom(1,4);  // set a random direction to roll
-        this.maxSpeed.x = getRandom(-Math.abs(this.speedConst.x),Math.abs(this.speedConst.x));
-        this.maxSpeed.y = getRandom(-Math.abs(this.speedConst.y),Math.abs(this.speedConst.y));
+        // get random speed
+        this.maxSpeed.x = getRandom(-Math.abs(this.speedConst.min), Math.abs(this.speedConst.max));
+        this.maxSpeed.y = getRandom(-Math.abs(this.speedConst.min), Math.abs(this.speedConst.max));
 
         let spriteAnimations = this.generateSpriteAnimation(this.direction);    // get directional spritesheet frames
         this.body.textures = spriteAnimations;  // set the frames for the dice

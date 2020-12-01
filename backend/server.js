@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
-
 const cors = require('cors');
 
 const http = require("http").createServer();
+
+const PORT  = process.env.PORT ||  5000;
+
+const utils = require("./utils/shuffle.js");
 
 const io = require("socket.io")(http, {
     cors: {
@@ -11,16 +14,21 @@ const io = require("socket.io")(http, {
     }
 });
 
-const PORT  = process.env.PORT ||  5000;
-
 app.use(cors());
+
+var outcomes = require("./config/outcomes.js");
 
 io.on("connection",(socket)=>{
 
-    console.log("New Client connected to socket");
-
-    socket.emit("welcome","Hello There client");
-
+    // shuffle the possible outcomes
+    outcomes = utils.shuffle(outcomes);    
+    
+    socket.on("diceRolled",(data)=>{
+        
+        let outcome = outcomes[data.value-1];
+        socket.emit("outcomeSend",{outcome : outcome});
+    
+    })
 })
 
 
