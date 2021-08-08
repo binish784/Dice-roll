@@ -26,4 +26,4 @@ You will also see any lint errors in the console.
 ## `npm run dev`
 
 Run npm run dev in the backend directory\
-Runs the backend server for
+Runs the backend server for socket connection
